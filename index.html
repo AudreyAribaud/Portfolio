@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes PWA</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-5 font-sans">
+
+  <!-- En-tête -->
+  <header class="max-w-md mx-auto mb-6 text-center">
+    <h1 class="text-2xl font-bold tracking-tight">Mes applis web</h1>
+    <p class="text-xs text-slate-400 mt-1">Voodoodoll</p>
+  </header>
+
+  <!-- Grille d'applications (Visuel type Smartphone) -->
+  <main id="app-grid" class="max-w-md mx-auto grid grid-cols-3 gap-4 sm:grid-cols-4">
+    <!-- Les cartes seront injectées ici automatiquement -->
+  </main>
+
+  <script>
+    // Chargement dynamique des applications
+fetch('applis.json')
+  .then(response => response.json())
+  .then(apps => {
+    const grid = document.getElementById('app-grid');
+    grid.innerHTML = apps.map(app => `
+      <a href="${app.url}" target="_blank" class="group flex flex-col items-center p-2 rounded-2xl transition-all duration-200 hover:bg-slate-800/60 active:scale-95">
+        <!-- Conteneur de l'icône sans padding -->
+        <div class="w-16 h-16 rounded-2xl bg-slate-800 shadow-lg ring-1 ring-white/10 flex items-center justify-center overflow-hidden mb-2 group-hover:shadow-indigo-500/20">
+          <!-- Image paramétrée en object-cover -->
+          <img src="${app.icon}" alt="${app.nom}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/64?text=PWA'">
+        </div>
+        <!-- Nom de l'app -->
+        <span class="text-xs font-medium text-slate-200 truncate w-full text-center">${app.nom}</span>
+        <span class="text-[10px] text-slate-500 truncate w-full text-center">${app.categorie}</span>
+      </a>
+    `).join('');
+  })
+  .catch(err => console.error("Erreur de chargement des PWA :", err));
+  </script>
+</body>
+</html>
