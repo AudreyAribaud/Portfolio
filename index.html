@@ -6,6 +6,9 @@
   <title>Mes PWA</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Librairie QR Code JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen p-5 font-sans">
 
@@ -13,12 +16,39 @@
   <header class="max-w-md mx-auto mb-6 text-center">
     <h1 class="text-2xl font-bold tracking-tight">Mes applis web</h1>
     <p class="text-xs text-slate-400 mt-1">Voodoodoll</p>
+  
+  <!-- Bouton Partager / QR Code -->
+    <button id="qr-btn" onclick="openModal()" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 active:scale-95 flex items-center justify-center transition-all ring-1 ring-white/10 shadow-md" title="Partager la page">
+      <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+      </svg>
+    </button>
   </header>
 
   <!-- Grille d'applications (Visuel type Smartphone) -->
   <main id="app-grid" class="max-w-md mx-auto grid grid-cols-3 gap-4 sm:grid-cols-4">
     <!-- Les cartes seront injectées ici automatiquement -->
   </main>
+
+  <!-- Pop-up / Modal QR Code -->
+  <div id="qr-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50 transition-opacity">
+    <div class="bg-slate-800 p-6 rounded-3xl max-w-xs w-full text-center border border-slate-700 shadow-2xl relative">
+      <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold">
+        &times;
+      </button>
+      <h2 class="text-lg font-bold mb-1">Partager mon Hub</h2>
+      <p class="text-xs text-slate-400 mb-4">Scannez ce QR code pour ouvrir cette page sur un autre appareil</p>
+      
+      <!-- Zone d'affichage du QR Code -->
+      <div class="bg-white p-4 rounded-2xl inline-block shadow-inner mb-4">
+        <div id="qrcode"></div>
+      </div>
+      
+      <button onclick="closeModal()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-semibold text-white transition-colors">
+        Fermer
+      </button>
+    </div>
+  </div>
 
   <script>
     // Chargement dynamique des applications
@@ -40,6 +70,33 @@ fetch('applis.json')
     `).join('');
   })
   .catch(err => console.error("Erreur de chargement des PWA :", err));
+
+  // Gestion de la fenêtre Pop-up QR Code
+    let qrGenerated = false;
+
+    function openModal() {
+      const modal = document.getElementById('qr-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+
+      if (!qrGenerated) {
+        new QRCode(document.getElementById("qrcode"), {
+          text: window.location.href, // Récupère automatiquement l'URL de votre site hébergé
+          width: 180,
+          height: 180,
+          colorDark: "#0f172a",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+        qrGenerated = true;
+      }
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('qr-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
   </script>
 </body>
 </html>
