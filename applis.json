@@ -22,6 +22,30 @@
     "categorie": "Game",
     "icon": "icons/boardgame.png",
     "url": "https://board-games-ashy.vercel.app/"
+  },
+  {
+    "nom": "Partitions synthé",
+    "categorie": "Musique",
+    "icon": "icons/synthsheet.png",
+    "url": "https://synthetiseur-partitions.vercel.app/"
+  },
+  {
+    "nom": "Focus Sound",
+    "categorie": "Musique",
+    "icon": "icons/focus_sound.png",
+    "url": "https://focus-sound-eta.vercel.app/"
+  },
+  {
+    "nom": "Invest Bourse",
+    "categorie": "Finance",
+    "icon": "icons/invest_bourse.png",
+    "url": "https://invest-bourse.vercel.app/"
+  },
+  {
+    "nom": "Boussole",
+    "categorie": "Productivité",
+    "icon": "icons/boussole.png",
+    "url": "https://boussole-self.vercel.app/"
   }
 
 ]
